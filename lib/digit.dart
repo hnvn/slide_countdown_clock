@@ -5,18 +5,18 @@ class Digit<T> extends StatefulWidget {
   final T initValue;
   final String id;
   final TextStyle textStyle;
-  final BoxDecoration decoration;
+  final BoxDecoration? decoration;
   final SlideDirection slideDirection;
   final EdgeInsets padding;
 
   Digit({
-    @required this.itemStream,
-    @required this.initValue,
-    @required this.id,
-    @required this.textStyle,
-    @required this.decoration,
-    @required this.slideDirection,
-    @required this.padding,
+    required this.itemStream,
+    required this.initValue,
+    required this.id,
+    required this.textStyle,
+    required this.decoration,
+    required this.slideDirection,
+    required this.padding,
   });
 
   @override
@@ -24,10 +24,10 @@ class Digit<T> extends StatefulWidget {
 }
 
 class _DigitState extends State<Digit> with SingleTickerProviderStateMixin {
-  StreamSubscription<int> _streamSubscription;
+  StreamSubscription<int>? _streamSubscription;
   int _currentValue = 0;
   int _nextValue = 0;
-  AnimationController _controller;
+  late AnimationController _controller;
 
   bool haveData = false;
 
@@ -35,13 +35,13 @@ class _DigitState extends State<Digit> with SingleTickerProviderStateMixin {
     begin: const Offset(0.0, -1.0),
     end: Offset.zero,
   );
-  Animation<Offset> _slideDownAnimation;
+  late Animation<Offset> _slideDownAnimation;
 
   Animatable<Offset> _slideDownDetails2 = Tween<Offset>(
     begin: const Offset(0.0, 0.0),
     end: Offset(0.0, 1.0),
   );
-  Animation<Offset> _slideDownAnimation2;
+  late Animation<Offset> _slideDownAnimation2;
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class _DigitState extends State<Digit> with SingleTickerProviderStateMixin {
     super.didUpdateWidget(oldWidget);
     try {
       _controller.removeStatusListener(animationListener);
-      _streamSubscription.cancel();
+      _streamSubscription!.cancel();
     } catch (ex) {
 
     }
@@ -103,13 +103,13 @@ class _DigitState extends State<Digit> with SingleTickerProviderStateMixin {
         _nextValue = value;
         _controller.forward();
       }
-    });
+    }) as StreamSubscription<int>?;
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    if (_streamSubscription != null) _streamSubscription.cancel();
+    if (_streamSubscription != null) _streamSubscription!.cancel();
     super.dispose();
   }
 

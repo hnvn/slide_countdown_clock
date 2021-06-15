@@ -18,19 +18,19 @@ class SlideCountdownClock extends StatefulWidget {
   final TextStyle textStyle;
   
   /// The style used for seperator between digits. I.e. `:`, `.`, `,`.
-  final TextStyle separatorTextStyle;
+  final TextStyle? separatorTextStyle;
   
   /// The character(s) to display between the hour divisions: `10 : 20`
   final String separator;
   
   /// The decoration to place on the container
-  final BoxDecoration decoration;
+  final BoxDecoration? decoration;
   
   /// The direction in which the numerals move out in and out of view.
   final SlideDirection slideDirection;
   
   /// A callback that is called when the [duration] reaches 0.
-  final VoidCallback onDone;
+  final VoidCallback? onDone;
   
   /// The padding around the widget.
   final EdgeInsets padding;
@@ -42,8 +42,8 @@ class SlideCountdownClock extends StatefulWidget {
   final bool shouldShowDays;
 
   SlideCountdownClock({
-    Key key,
-    @required this.duration,
+    Key? key,
+    required this.duration,
     this.textStyle: const TextStyle(
       fontSize: 30,
       color: Colors.black,
@@ -73,10 +73,10 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
     }
   }
 
-  bool shouldShowDays;
-  Duration timeLeft;
-  Stream<DateTime> initStream;
-  Stream<DateTime> timeStream;
+  late bool shouldShowDays;
+  late Duration timeLeft;
+  late Stream<DateTime> initStream;
+  Stream<DateTime>? timeStream;
 
   @override
   void initState() {
@@ -103,7 +103,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
       timeLeft -= Duration(seconds: 1);
       if (timeLeft.inSeconds == 0) {
         Future.delayed(Duration(milliseconds: 1000), () {
-          if (widget.onDone != null) widget.onDone();
+          if (widget.onDone != null) widget.onDone!();
         });
       }
       return time;
@@ -124,7 +124,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
           timeStream, digits, DateTime.now(), 'daysHundreds');
     } else {
       dayDigits = _buildDigit(
-        timeStream,
+        timeStream!,
         (DateTime time) => (timeLeft.inDays) ~/ 10,
         (DateTime time) => (timeLeft.inDays) % 10,
         DateTime.now(),
@@ -141,7 +141,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
             ? _buildSeparator()
             : SizedBox(),
         _buildDigit(
-          timeStream,
+          timeStream!,
           (DateTime time) => (timeLeft.inHours % 24) ~/ 10,
           (DateTime time) => (timeLeft.inHours % 24) % 10,
           DateTime.now(),
@@ -151,7 +151,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
         (widget.separator.isNotEmpty) ? _buildSeparator() : SizedBox(),
         _buildSpace(),
         _buildDigit(
-          timeStream,
+          timeStream!,
           (DateTime time) => (timeLeft.inMinutes % 60) ~/ 10,
           (DateTime time) => (timeLeft.inMinutes % 60) % 10,
           DateTime.now(),
@@ -161,7 +161,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
         (widget.separator.isNotEmpty) ? _buildSeparator() : SizedBox(),
         _buildSpace(),
         _buildDigit(
-          timeStream,
+          timeStream!,
           (DateTime time) => (timeLeft.inSeconds % 60) ~/ 10,
           (DateTime time) => (timeLeft.inSeconds % 60) % 10,
           DateTime.now(),
@@ -183,7 +183,7 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
   }
 
   Widget _buildDigitForLargeNumber(
-      Stream<DateTime> timeStream,
+      Stream<DateTime>? timeStream,
       List<Function> digits,
       DateTime startTime,
       String id,
@@ -196,9 +196,9 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
           decoration: widget.decoration,
           padding:
           widget.tightLabel ? EdgeInsets.only(left: 3) : EdgeInsets.zero,
-          child: Digit<int>(
+          child: Digit<int?>(
             padding: widget.padding,
-            itemStream: timeStream.map<int>(digits[i]),
+            itemStream: timeStream!.map<int>(digits[i] as int Function(DateTime)),
             initValue: digits[i](startTime),
             id: id,
             decoration: widget.decoration,
@@ -242,9 +242,9 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
               padding: widget.tightLabel
                   ? EdgeInsets.zero
                   : EdgeInsets.only(left: 3),
-              child: Digit<int>(
+              child: Digit<int?>(
                 padding: widget.padding,
-                itemStream: timeStream.map<int>(tensDigit),
+                itemStream: timeStream.map<int>(tensDigit as int Function(DateTime)),
                 initValue: tensDigit(startTime),
                 id: id,
                 decoration: widget.decoration,
@@ -257,9 +257,9 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
               padding: widget.tightLabel
                   ? EdgeInsets.zero
                   : EdgeInsets.only(right: 3),
-              child: Digit<int>(
+              child: Digit<int?>(
                 padding: widget.padding,
-                itemStream: timeStream.map<int>(onesDigit),
+                itemStream: timeStream.map<int>(onesDigit as int Function(DateTime)),
                 initValue: onesDigit(startTime),
                 decoration: widget.decoration,
                 slideDirection: widget.slideDirection,

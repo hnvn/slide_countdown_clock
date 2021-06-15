@@ -6,9 +6,9 @@ class ClipHalfRect extends CustomClipper<Rect> {
   final SlideDirection slideDirection;
 
   ClipHalfRect({
-    @required this.percentage,
-    @required this.isUp,
-    @required this.slideDirection,
+    required this.percentage,
+    required this.isUp,
+    required this.slideDirection,
   });
 
   @override

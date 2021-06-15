@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: Text(widget.title!)),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               shouldShowDays: true,
               onDone: () {
-                _scaffoldKey.currentState
+                _scaffoldKey.currentState!
                     .showSnackBar(SnackBar(content: Text('Clock 1 finished')));
               },
             ),
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
               onDone: () {
-                _scaffoldKey.currentState
+                _scaffoldKey.currentState!
                     .showSnackBar(SnackBar(content: Text('Clock 1 finished')));
               },
             ),
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration:
                     BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
                 onDone: () {
-                  _scaffoldKey.currentState.showSnackBar(
+                  _scaffoldKey.currentState!.showSnackBar(
                       SnackBar(content: Text('Clock 1 finished')));
                 },
               ),
