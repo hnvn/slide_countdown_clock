@@ -87,13 +87,6 @@ class SlideCountdownClockState extends State<SlideCountdownClock> {
     _init();
   }
 
-  @override
-  void didUpdateWidget(SlideCountdownClock oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    timeLeft = widget.duration;
-  }
-
   void _init() {
     var time = DateTime.now();
     timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
